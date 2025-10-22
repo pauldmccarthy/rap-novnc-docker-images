@@ -1,9 +1,18 @@
 name: Build and publish noVNC RAP Docker images
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
+    inputs:
+      image:
+        type:        choice
+        required:    true
+        description: Image to build (sub-directory name)
+        options:
+          - ubuntu-novnc
+          - fsleyes-novnc
+          - fsl-novnc
+          - rap-analysis-novnc
+          - all
 
 jobs:
   build:
@@ -19,17 +28,21 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+      # Will start building arm64 at some point in the future
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v3
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build ubuntu-novnc
-        run:  bash ./build.sh ./ubuntu-novnc --push
+      - name: Build image
+        if:   ${{ github.event.inputs.image != 'all' }}
+        run:  bash ./build.sh ./${{ github.event.inputs.image }} --push
 
-      - name: Build fsleyes-novnc
-        run:  bash ./build.sh ./fsleyes-novnc --push
-
-      - name: Build fsl-novnc
-        run:  bash ./build.sh ./fsl-novnc --push
+      - name: Build all images
+        if:   ${{ github.event.inputs.image == 'all' }}
+        run:  |
+          bash ./build.sh ./ubuntu-novnc       --push
+          bash ./build.sh ./fsleyes-novnc      --push
+          bash ./build.sh ./fsl-novnc          --push
+          bash ./build.sh ./rap-analysis-novnc --push
