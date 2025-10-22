@@ -13,9 +13,7 @@ if [[ ${DX_JOB_ID} != "" ]]; then
   echo ""
 fi
 
-/opt/noVNC/utils/novnc_proxy   \
-  --vnc localhost:5901         \
-  --listen 8080                \
-  --cert /opt/noVNC/server.crt \
-  --key  /opt/noVNC/server.key
+/opt/noVNC/utils/novnc_proxy \
+  --vnc localhost:5901       \
+  --listen 8080
 vncserver -kill :1

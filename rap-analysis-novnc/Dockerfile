@@ -1,4 +1,4 @@
-FROM  pauldmccarthy/ubuntu-novnc
+FROM  pauldmccarthy/fsl-novnc
 LABEL org.opencontainers.image.authors="pauldmccarthy@gmail.com"
 LABEL org.opencontainers.image.url="https://github.com/pauldmccarthy/rap-novnc-docker-images"
 LABEL org.opencontainers.image.documentation="https://github.com/pauldmccarthy/rap-novnc-docker-images"
@@ -10,16 +10,10 @@ LABEL org.opencontainers.image.description="Ubuntu+noVNC desktop with FSL and Co
 # emacs and web browser
 #######################
 
-RUN apt install -y emacs firefox
-
-#####
-# FSL
-#####
-
-RUN GETFSL_URL=https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/getfsl.sh; \
-    curl -Ls ${GETFSL_URL} | sh -s /opt/fsl
-RUN echo 'export FSLDIR=/opt/fsl/'             >> /root/.bashrc && \
-    echo 'source ${FSLDIR}/etc/fslconf/fsl.sh' >> /root/.bashrc
+RUN apt install -y emacs firefox && \
+    apt clean -y                 && \
+    apt autoremove -y            && \
+    rm -rf /var/lib/apt/lists/*
 
 ############################
 # PANDORA version of fsl_glm

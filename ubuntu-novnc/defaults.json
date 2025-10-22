@@ -1,1 +1,5 @@
-{"resize" : "remote"}
+{
+    "resize"      : "remote",
+    "autoconnect" : "true",
+    "reconnect"   : "true"
+}

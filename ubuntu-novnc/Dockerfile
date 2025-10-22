@@ -10,48 +10,49 @@ LABEL org.opencontainers.image.description="Minimual Ubuntu+noVNC installation f
 # Core utilities + XFCE desktop
 ###############################
 
-RUN DEBIAN_FRONTEND=noninteractive && \
-    apt update -y                  && \
-    apt install -y locales         && \
-    locale-gen en_US.UTF-8         && \
-    locale-gen en_GB.UTF-8         && \
-    update-locale                  && \
-    apt install -y                    \
-        git                           \
-        curl                          \
-        bzip2                         \
-        zip                           \
-        unzip                         \
-        nano                          \
-        dbus-x11                      \
-        libxfce4ui-utils              \
-        thunar                        \
-        xfce4-appfinder               \
-        xfce4-panel                   \
-        xfce4-session                 \
-        xfce4-settings                \
-        xfce4-terminal                \
-        xfconf                        \
-        xfdesktop4                    \
-        xfwm4                         \
-        tigervnc-standalone-server    \
-        tigervnc-common         &&    \
-        apt -y clean
+RUN DEBIAN_FRONTEND=noninteractive  && \
+    apt update -y                   && \
+    apt install -y locales          && \
+    locale-gen en_US.UTF-8          && \
+    locale-gen en_GB.UTF-8          && \
+    update-locale                   && \
+    apt install -y                     \
+        bzip2                          \
+        curl                           \
+        dbus-x11                       \
+        git                            \
+        libxfce4ui-utils               \
+        nano                           \
+        python3                        \
+        thunar                         \
+        tigervnc-common                \
+        tigervnc-standalone-server     \
+        unzip                          \
+        xfce4-appfinder                \
+        xfce4-panel                    \
+        xfce4-session                  \
+        xfce4-settings                 \
+        xfce4-terminal                 \
+        xfconf                         \
+        xfdesktop4                     \
+        xfwm4                          \
+        zip                         && \
+        apt -y clean                && \
+        apt -y autoremove           && \
+        rm -rf /var/lib/apt/lists/* && \
+        ln -s /usr/bin/python3 /usr/bin/python
 
 #######
 # noVNC
 #######
 
-RUN git clone --depth 1                    \
-        https://github.com/novnc/noVNC.git \
-        /opt/noVNC
-RUN git clone --depth 1                         \
-        https://github.com/novnc/websockify.git \
-        /opt/noVNC/utils/websockify
-RUN openssl req -new -x509 -days 365 -nodes \
-       -out    /opt/noVNC/server.crt        \
-       -keyout /opt/noVNC/server.key        \
-       -subj "/C=US/ST=State/L=City/O=company/OU=Com/CN=www.testserver.local"
+RUN NOVNCURL=https://github.com/novnc/noVNC/archive/v1.6.0.tar.gz;         \
+    WSCKURL=https://github.com/novnc/websockify/archive/v0.13.0.tar.gz;    \
+    mkdir -p /opt/noVNC/utils/websockify                                && \
+    cd /opt/noVNC/                                                      && \
+    curl -sSfL ${NOVNCURL} | tar -zxf - --strip=1                       && \
+    curl -sSfL ${WSCKURL}  | tar -zxf - -C ./utils/websockify --strip=1 && \
+    find . -name ".git*"   | xargs rm -rf
 
 RUN mkdir -p         /root/.vnc/
 ADD vncserver-config /root/.vnc/config
