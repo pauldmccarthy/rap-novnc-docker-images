@@ -6,15 +6,6 @@ LABEL org.opencontainers.image.source="https://github.com/pauldmccarthy/rap-novn
 LABEL org.opencontainers.image.title="Ubuntu+noVNC desktop with FSL and Connectome Workbench installed"
 LABEL org.opencontainers.image.description="Ubuntu+noVNC desktop with FSL and Connectome Workbench installed, for MRI image analysis on the UK Biobank Research Analysis Platform (RAP)."
 
-#######################
-# emacs and web browser
-#######################
-
-RUN apt install -y emacs firefox && \
-    apt clean -y                 && \
-    apt autoremove -y            && \
-    rm -rf /var/lib/apt/lists/*
-
 ############################
 # PANDORA version of fsl_glm
 # and fastconfounds
@@ -43,13 +34,37 @@ RUN FSLDIR=/opt/fsl/                         \
         --destdir=/opt/fsl/share/fsl/bin/    \
         fsl_glm fastconfounds
 
+#######################################
+# Workbench deps, emacs and web browser
+#######################################
+
+# The shared libraries bundled with
+# workbench are out-dated, so we
+# install them using apt, and remove
+# the bundled copies.
+
+RUN apt update -y       && \
+    apt install -y         \
+    emacs                  \
+    firefox                \
+    libftgl2               \
+    libglu1-mesa           \
+    libosmesa6             \
+    libqt5core5t64         \
+    libqt5gui5t64          \
+    libqt5network5t64      \
+    libqt5opengl5t64       \
+    libqt5printsupport5t64 \
+    libqt5widgets5t64      \
+    libqt5xml5t64       && \
+    apt -y clean        && \
+    apt -y autoremove   && \
+    rm -rf /var/lib/apt/lists/*
+
 ######################
 # Connectome workbench
 ######################
 
-# The libraries bundled with workbench are
-# out-dated so we remove the bundled copies,
-# then install them using apt.
 RUN WBURL=https://humanconnectome.org/storage/app/media/workbench/workbench-linux64-v2.1.0.zip; \
     cd /opt/                                        && \
     curl -Ls ${WBURL} > workbench.zip               && \
@@ -59,14 +74,3 @@ RUN WBURL=https://humanconnectome.org/storage/app/media/workbench/workbench-linu
     rm -r workbench/libs_linux64                    && \
     rm -r workbench/bin_linux64                     && \
     echo 'export PATH=/opt/workbench/exe_linux64:$PATH' >> /root/.bashrc
-RUN apt install -y         \
-    libglu1-mesa           \
-    libftgl2               \
-    libqt5network5t64      \
-    libqt5opengl5t64       \
-    libqt5printsupport5t64 \
-    libqt5xml5t64          \
-    libqt5widgets5t64      \
-    libqt5gui5t64          \
-    libqt5core5t64         \
-    libosmesa6

@@ -37,10 +37,10 @@ RUN DEBIAN_FRONTEND=noninteractive  && \
         xfdesktop4                     \
         xfwm4                          \
         zip                         && \
-        apt -y clean                && \
-        apt -y autoremove           && \
-        rm -rf /var/lib/apt/lists/* && \
-        ln -s /usr/bin/python3 /usr/bin/python
+    apt -y clean                    && \
+    apt -y autoremove               && \
+    rm -rf /var/lib/apt/lists/*     && \
+    ln -s /usr/bin/python3 /usr/bin/python
 
 #######
 # noVNC

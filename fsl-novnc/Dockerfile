@@ -11,6 +11,6 @@ LABEL org.opencontainers.image.description="Ubuntu+noVNC desktop with FSL instal
 #####
 
 RUN GETFSL_URL=https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/getfsl.sh; \
-    curl -Ls ${GETFSL_URL} | sh -s /opt/fsl
-RUN echo 'export FSLDIR=/opt/fsl/'             >> /root/.bashrc && \
+    curl -Ls ${GETFSL_URL} | sh -s /opt/fsl                     && \
+    echo 'export FSLDIR=/opt/fsl/'             >> /root/.bashrc && \
     echo 'source ${FSLDIR}/etc/fslconf/fsl.sh' >> /root/.bashrc
