@@ -22,6 +22,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
         bzip2                         \
         zip                           \
         unzip                         \
+        nano                          \
         dbus-x11                      \
         libxfce4ui-utils              \
         thunar                        \
@@ -89,7 +90,7 @@ RUN echo 'export PATH=/opt/micromamba/bin/:$PATH'                           >> /
 RUN echo 'eval "$(${MAMBA_ROOT_PREFIX}bin/micromamba shell hook -s posix)"' >> /root/.bashrc
 RUN echo 'micromamba activate ${MAMBA_ROOT_PREFIX}'                         >> /root/.bashrc
 
-ENV USER root
+ENV USER=root
 WORKDIR /root
 
 ENTRYPOINT [ "/opt/noVNC/startvnc" ]

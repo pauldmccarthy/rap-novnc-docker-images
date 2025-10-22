@@ -4,7 +4,7 @@ LABEL org.opencontainers.image.url="https://github.com/pauldmccarthy/rap-novnc-d
 LABEL org.opencontainers.image.documentation="https://github.com/pauldmccarthy/rap-novnc-docker-images"
 LABEL org.opencontainers.image.source="https://github.com/pauldmccarthy/rap-novnc-docker-images"
 LABEL org.opencontainers.image.title="Ubuntu+noVNC desktop with FSL installed"
-LABEL org.opencontainers.image.description="Ubuntu+noVNC desktop with FSL installed, for MRI image analysis.on the UK Biobank Research Analysis Platform (RAP)."
+LABEL org.opencontainers.image.description="Ubuntu+noVNC desktop with FSL installed, for MRI image analysis on the UK Biobank Research Analysis Platform (RAP)."
 
 #####
 # FSL
