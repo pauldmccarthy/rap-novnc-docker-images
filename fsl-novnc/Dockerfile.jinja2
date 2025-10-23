@@ -6,11 +6,4 @@ LABEL org.opencontainers.image.source="https://github.com/pauldmccarthy/rap-novn
 LABEL org.opencontainers.image.title="Ubuntu+noVNC desktop with FSL installed"
 LABEL org.opencontainers.image.description="Ubuntu+noVNC desktop with FSL installed, for MRI image analysis on the UK Biobank Research Analysis Platform (RAP)."
 
-#####
-# FSL
-#####
-
-RUN GETFSL_URL=https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/getfsl.sh; \
-    curl -Ls ${GETFSL_URL} | sh -s /opt/fsl                     && \
-    echo 'export FSLDIR=/opt/fsl/'             >> /root/.bashrc && \
-    echo 'source ${FSLDIR}/etc/fslconf/fsl.sh' >> /root/.bashrc
+{% include "fsl.jinja2" %}
