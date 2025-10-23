@@ -10,38 +10,33 @@ LABEL org.opencontainers.image.description="Minimual Ubuntu+noVNC installation f
 # Core utilities + XFCE desktop
 ###############################
 
-RUN DEBIAN_FRONTEND=noninteractive  && \
-    apt update -y                   && \
-    apt install -y locales          && \
-    locale-gen en_US.UTF-8          && \
-    locale-gen en_GB.UTF-8          && \
-    update-locale                   && \
-    apt install -y                     \
-        bzip2                          \
-        curl                           \
-        dbus-x11                       \
-        git                            \
-        libxfce4ui-utils               \
-        nano                           \
-        python3                        \
-        thunar                         \
-        tini                           \
-        tigervnc-common                \
-        tigervnc-standalone-server     \
-        unzip                          \
-        xfce4-appfinder                \
-        xfce4-panel                    \
-        xfce4-session                  \
-        xfce4-settings                 \
-        xfce4-terminal                 \
-        xfconf                         \
-        xfdesktop4                     \
-        xfwm4                          \
-        zip                         && \
-    apt -y clean                    && \
-    apt -y autoremove               && \
-    rm -rf /var/lib/apt/lists/*     && \
-    ln -s /usr/bin/python3 /usr/bin/python
+{{ apt_install('locales') }} && \
+    locale-gen en_US.UTF-8   && \
+    locale-gen en_GB.UTF-8   && \
+    update-locale
+{{ apt_install(
+       'bzip2',
+       'curl',
+       'dbus-x11',
+       'git',
+       'libxfce4ui-utils',
+       'nano',
+       'python3',
+       'thunar',
+       'tini',
+       'tigervnc-common',
+       'tigervnc-standalone-server',
+       'unzip',
+       'xfce4-appfinder',
+       'xfce4-panel',
+       'xfce4-session',
+       'xfce4-settings',
+       'xfce4-terminal',
+       'xfconf',
+       'xfdesktop4',
+       'xfwm4',
+       'zip') }}
+RUN ln -s /usr/bin/python3 /usr/bin/python
 
 #######
 # noVNC
@@ -87,10 +82,10 @@ RUN if   [ $(uname -m) = "x86_64" ]; then                                       
 # Base env is activated by default. We also
 # always want dx to be on the PATH, so we
 # explicitly add /opt/micromamba/bin/.
-RUN echo 'export MAMBA_ROOT_PREFIX=/opt/micromamba/'                        >> /root/.bashrc
-RUN echo 'export PATH=/opt/micromamba/bin/:$PATH'                           >> /root/.bashrc
-RUN echo 'eval "$(${MAMBA_ROOT_PREFIX}bin/micromamba shell hook -s posix)"' >> /root/.bashrc
-RUN echo 'micromamba activate ${MAMBA_ROOT_PREFIX}'                         >> /root/.bashrc
+{{ add_to_profile('export MAMBA_ROOT_PREFIX=/opt/micromamba/') }}
+{{ add_to_profile('export PATH=/opt/micromamba/bin/:$PATH') }}
+{{ add_to_profile('eval "$(${MAMBA_ROOT_PREFIX}bin/micromamba shell hook -s posix)"') }}
+{{ add_to_profile('micromamba activate ${MAMBA_ROOT_PREFIX}') }}
 
 ENV USER=root
 WORKDIR /root

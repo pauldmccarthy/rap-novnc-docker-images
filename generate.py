@@ -1,0 +1,97 @@
+#!/usr/bin/env python
+
+import sys
+import os.path as op
+import textwrap as tw
+
+import jinja2 as j2
+
+BASEDIR = op.dirname(op.abspath(__file__))
+
+
+def apt_install(*packages):
+    pre = ['RUN DEBIAN_FRONTEND=noninteractive && \\',
+           '    apt update -y && \\']
+
+    packages       = list(packages)
+    packages[0]    =  f'    apt install -y {packages[0]} \\'
+    packages[1:-1] = [f'        {p} \\' for p in packages[1:-1]]
+    packages[-1]   =  f'        {packages[-1]} && \\'
+
+    post = ['    apt -y clean && \\',
+            '    apt -y autoremove && \\',
+            '    rm -rf /var/lib/apt/lists/*']
+
+    return '\n'.join(pre + packages + post)
+
+
+def add_to_profile(line):
+    return f"RUN echo '{line}' >> /root/.bashrc"
+
+
+def install_desktop_file(desktopfile, installdir):
+
+    basename = op.basename(desktopfile)
+    destfile = f'/root/Desktop/{basename}'
+
+    return tw.dedent(f"""
+    RUN ADD {desktopfile} {destfile}
+    RUN sed -i "s#{{{{INSTALLDIR}}}}#{installdir}#g" {destfile}
+    """)
+
+def generate_dockerfile(subdir):
+
+    infile      = f'{subdir}/Dockerfile.jinja2'
+    outfile     = f'{subdir}/Dockerfile'
+    templatedir = f'{BASEDIR}/templates'
+
+    loader = j2.FileSystemLoader([subdir, templatedir])
+    jenv   = j2.Environment(loader=loader)
+    env    = {
+        'apt_install'          : apt_install,
+        'add_to_profile'       : add_to_profile,
+        'install_desktop_file' : install_desktop_file
+    }
+
+    with open(infile, 'rt') as f:
+        template = jenv.from_string(f.read())
+
+    rendered = template.render(**env)
+
+    with open(outfile, 'wt') as f:
+        f.write(rendered)
+
+
+def main(args=None):
+    if args is None:
+        args = sys.argv[1:]
+
+    if len(args) != 1:
+        print('Usage: ')
+        print()
+        print('generate.py <sub-dir>')
+        print()
+        print('Or to build all images:')
+        print()
+        print('generate.py all')
+        exit(1)
+
+    if args[0] == 'all':
+        subdirs = [
+            'f{BASEDIR}/ubuntu-novnc',
+            'f{BASEDIR}/fsleyes-novnc',
+            'f{BASEDIR}/workbench-novnc',
+            'f{BASEDIR}/fsl-novnc',
+            'f{BASEDIR}/rap-analysis-novnc']
+    else:
+        subdirs = args
+
+    subdirs = [op.abspath(s) for s in subdirs]
+
+    for subdir in subdirs:
+        print(f'Generating {subdir}/Dockerfile')
+        generate_dockerfile(subdir)
+
+
+if __name__ == '__main__':
+    main()
