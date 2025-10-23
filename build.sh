@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -e
+
 if [ "$#" -lt 1 ]; then
   echo "Usage: ./build.sh ./imagedir/ [docker build args ...]"
   exit 1
@@ -9,10 +11,7 @@ IMAGE_DIR="$1"
 shift
 BUILD_ARGS="$@"
 
-if [ ! -e ${IMAGE_DIR}/Dockerfile ]; then
-  echo "Cannot find ${IMAGE_DIR}/Dockerfile"
-  exit 1
-fi
+python ./generate.py ${IMAGE_DIR}
 
 IMAGE_NAME=$(basename ${IMAGE_DIR})
 IMAGE_NAME="pauldmccarthy/${IMAGE_NAME}"

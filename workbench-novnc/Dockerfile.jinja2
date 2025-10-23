@@ -1,0 +1,9 @@
+FROM  pauldmccarthy/ubuntu-novnc
+LABEL org.opencontainers.image.authors="pauldmccarthy@gmail.com"
+LABEL org.opencontainers.image.url="https://github.com/pauldmccarthy/rap-novnc-docker-images"
+LABEL org.opencontainers.image.documentation="https://github.com/pauldmccarthy/rap-novnc-docker-images"
+LABEL org.opencontainers.image.source="https://github.com/pauldmccarthy/rap-novnc-docker-images"
+LABEL org.opencontainers.image.title="Ubuntu+noVNC desktop with Connectome Workbench installed"
+LABEL org.opencontainers.image.description="Ubuntu+noVNC desktop with Connectome Workbench, for MRI image analysis on the UK Biobank Research Analysis Platform (RAP)."
+
+{% include "workbench.jinja2" %}

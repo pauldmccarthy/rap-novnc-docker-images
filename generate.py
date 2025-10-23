@@ -13,10 +13,15 @@ def apt_install(*packages):
     pre = ['RUN DEBIAN_FRONTEND=noninteractive && \\',
            '    apt update -y && \\']
 
-    packages       = list(packages)
-    packages[0]    =  f'    apt install -y {packages[0]} \\'
-    packages[1:-1] = [f'        {p} \\' for p in packages[1:-1]]
-    packages[-1]   =  f'        {packages[-1]} && \\'
+    packages = list(packages)
+
+    if len(packages) == 1:
+        packages[0] = f'    apt install -y {packages[0]} && \\'
+        pass
+    else:
+        packages[0]    =  f'    apt install -y {packages[0]} \\'
+        packages[1:-1] = [f'        {p} \\' for p in packages[1:-1]]
+        packages[-1]   =  f'        {packages[-1]} && \\ '
 
     post = ['    apt -y clean && \\',
             '    apt -y autoremove && \\',
