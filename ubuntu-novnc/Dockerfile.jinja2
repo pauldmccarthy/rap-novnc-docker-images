@@ -75,6 +75,12 @@ RUN if   [ $(uname -m) = "x86_64" ]; then                                       
     bin/micromamba clean --all                                                    && \
     bin/pip install dxpy;
 
+###########################
+# XFCE4 panel configuration
+###########################
+
+COPY xfce-panel.xml /etc/xdg/xfce4/panel/default.xml
+
 ###############
 # shell profile
 ###############

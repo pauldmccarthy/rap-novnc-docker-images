@@ -11,17 +11,12 @@ BASEDIR = op.dirname(op.abspath(__file__))
 
 def apt_install(*packages):
     pre = ['RUN DEBIAN_FRONTEND=noninteractive && \\',
-           '    apt update -y && \\']
+           '    apt update -y && \\',
+           '    apt install -y \\']
 
-    packages = list(packages)
-
-    if len(packages) == 1:
-        packages[0] = f'    apt install -y {packages[0]} && \\'
-        pass
-    else:
-        packages[0]    =  f'    apt install -y {packages[0]} \\'
-        packages[1:-1] = [f'        {p} \\' for p in packages[1:-1]]
-        packages[-1]   =  f'        {packages[-1]} && \\ '
+    packages      = list(packages)
+    packages[:-1] = [f'        {p} \\' for p in packages[:-1]]
+    packages[ -1] =  f'        {packages[-1]} && \\'
 
     post = ['    apt -y clean && \\',
             '    apt -y autoremove && \\',
@@ -34,14 +29,28 @@ def add_to_profile(line):
     return f"RUN echo '{line}' >> /root/.bashrc"
 
 
-def install_desktop_file(desktopfile, installdir):
+def install_launcher(title, exe, icon, **envvars):
 
-    basename = op.basename(desktopfile)
-    destfile = f'/root/Desktop/{basename}'
+    basename    = title.replace(' ', '-')
+    appfile     = f'/usr/share/applications/{basename}.desktop'
+    desktopfile = f'/root/Desktop/{basename}.desktop'
+    envvars     = ' '.join(f'{k}="{v}"' for k, v in envvars.items())
+    desktop     = tw.dedent(f"""
+    [Desktop Entry]
+    Type=Application
+    Name={title}
+    Exec=env {envvars} {exe}
+    Icon={icon}
+    Terminal=false
+    StartupNotify=false
+    Path=/root/
+    """).strip().replace('\n', '\\n')
 
     return tw.dedent(f"""
-    RUN ADD {desktopfile} {destfile}
-    RUN sed -i "s#{{{{INSTALLDIR}}}}#{installdir}#g" {destfile}
+    RUN echo '{desktop}' > {appfile} && \\
+        chmod a+x {appfile}          && \\
+        mkdir -p /root/Desktop       && \\
+        ln -s {appfile} {desktopfile}
     """)
 
 def generate_dockerfile(subdir):
@@ -53,9 +62,9 @@ def generate_dockerfile(subdir):
     loader = j2.FileSystemLoader([subdir, templatedir])
     jenv   = j2.Environment(loader=loader)
     env    = {
-        'apt_install'          : apt_install,
-        'add_to_profile'       : add_to_profile,
-        'install_desktop_file' : install_desktop_file
+        'apt_install'      : apt_install,
+        'add_to_profile'   : add_to_profile,
+        'install_launcher' : install_launcher
     }
 
     with open(infile, 'rt') as f:

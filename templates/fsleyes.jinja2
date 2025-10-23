@@ -6,11 +6,19 @@ RUN /opt/micromamba/bin/micromamba create -y                        \
         -c https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/public/ \
         -c conda-forge                                              \
         -p /opt/fsleyes/                                            \
-        fsleyes fsl-avwutils fsl-data_standard fsl-data_atlases  && \
+        python=3.13                                                 \
+        fsleyes                                                     \
+        fsl-avwutils                                                \
+        fsl-data_standard                                           \
+        fsl-data_atlases                                         && \
     /opt/micromamba/bin/micromamba clean --all
 
 {{ add_to_profile('micromamba activate /opt/fsleyes') }}
 {{ add_to_profile('export FSLDIR=/opt/fsleyes') }}
 {{ add_to_profile('source ${FSLDIR}/etc/fslconf/fsl.sh') }}
 
-{{ install_desktop_file('FSLeyes.desktop', '/opt/fsleyes/') }}
+{{ install_launcher(
+       'FSLeyes',
+        '/opt/fsleyes/bin/fsleyes',
+        '/opt/fsleyes/lib/python3.13/site-packages/fsleyes/assets/linux/hicolor/48x48/apps/fsleyes.png',
+        FSLDIR='/opt/fsleyes/') }}

@@ -7,4 +7,8 @@ RUN GETFSL_URL=https://fsl.fmrib.ox.ac.uk/fsldownloads/fslconda/releases/getfsl.
 
 {{ add_to_profile('export FSLDIR=/opt/fsl/') }}
 {{ add_to_profile('source ${FSLDIR}/etc/fslconf/fsl.sh') }}
-{{ install_desktop_file('FSLeyes.desktop', '/opt/fsl/') }}
+{{ install_launcher(
+       'FSLeyes',
+       '/opt/fsl/bin/fsleyes',
+       '/opt/fsl/lib/python3.12/site-packages/fsleyes/assets/linux/hicolor/48x48/apps/fsleyes.png',
+       FSLDIR='/opt/fsl/') }}

@@ -30,4 +30,7 @@ RUN WBURL=https://humanconnectome.org/storage/app/media/workbench/workbench-linu
 
 ADD workbench_128x128x32.png /opt/workbench/
 {{ add_to_profile('export PATH=/opt/workbench/exe_linux64:$PATH') }}
-{{ install_desktop_file('Workbench.Desktop', '/opt/workbench/') }}
+{{ install_launcher(
+       'Workbench',
+       '/opt/workbench/exe_linux64/wb_view',
+       '/opt/workbench/workbench_128x128x32.png') }}
