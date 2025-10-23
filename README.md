@@ -15,7 +15,8 @@ The images are currently published to Docker Hub at <https://hub.docker.com/u/pa
 The following images are currently available:
  - `pauldmccarthy/ubuntu-novnc`: Minimal Ubuntu desktop without much else.
  - `pauldmccarthy/fsleyes-novnc`: Ubuntu desktop with the [FSLeyes image viewer](https://fsl.fmrib.ox.ac.uk/fsl/docs/utilities/fsleyes.html) and a few basic [FSL](https://fsl.fmrib.ox.ac.uk/fsl/docs/) utilities installed (`fslmaths`, `fslstats`, etc).
- - `pauldmccarthy/fsl-novnc`: Ubuntu desktop with a full FSL installation.
+ - `pauldmccarthy/workbench-novnc`: Ubuntu desktop with [Connectome Workbench](https://humanconnectome.org/software/connectome-workbench), providing the `wb_command` and `wb_view` commands for NIfTI/CIfTI image analysis and visualisation.
+ - `pauldmccarthy/fsl-novnc`: Ubuntu desktop with a full FSL installation for MRI analysis and visualisation.
 
 
 ## Run locally

@@ -10,6 +10,7 @@ on:
         options:
           - ubuntu-novnc
           - fsleyes-novnc
+          - workbench-novnc          
           - fsl-novnc
           - rap-analysis-novnc
           - all
@@ -44,5 +45,6 @@ jobs:
         run:  |
           bash ./build.sh ./ubuntu-novnc       --push
           bash ./build.sh ./fsleyes-novnc      --push
+          bash ./build.sh ./workbench-novnc    --push
           bash ./build.sh ./fsl-novnc          --push
           bash ./build.sh ./rap-analysis-novnc --push

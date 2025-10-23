@@ -25,6 +25,7 @@ RUN DEBIAN_FRONTEND=noninteractive  && \
         nano                           \
         python3                        \
         thunar                         \
+        tini                           \
         tigervnc-common                \
         tigervnc-standalone-server     \
         unzip                          \
@@ -94,4 +95,4 @@ RUN echo 'micromamba activate ${MAMBA_ROOT_PREFIX}'                         >> /
 ENV USER=root
 WORKDIR /root
 
-ENTRYPOINT [ "/opt/noVNC/startvnc" ]
+ENTRYPOINT [ "/usr/bin/tini", "--", "/opt/noVNC/startvnc" ]
