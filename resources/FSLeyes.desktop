@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=FSLeyes
+Exec={{INSTALLDIR}}/bin/fsleyes %F
+Icon={{INSTALLDIR}}/lib/python3.12/site-packages/assets/linux/hicolor/48x48/apps/fsleyes.png
+Terminal=false
+StartupNotify=false
+Path=/root/
