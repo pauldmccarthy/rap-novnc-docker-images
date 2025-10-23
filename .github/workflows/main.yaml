@@ -27,6 +27,14 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v5
 
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: 3.12
+
+      - name: Install Python dependencies
+        run:  pip install jinja2
+
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
@@ -42,7 +50,8 @@ jobs:
 
       - name: Build image
         if:   ${{ github.event.inputs.image != 'all' }}
-        run:  bash ./build.sh ./${{ github.event.inputs.image }} --push
+        run: |
+          bash ./build.sh ./${{ github.event.inputs.image }} --push
 
       - name: Build all images
         if:   ${{ github.event.inputs.image == 'all' }}
