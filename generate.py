@@ -50,6 +50,7 @@ def install_launcher(title, exe, icon, **envvars):
     RUN echo '{desktop}' > {appfile} && \\
         chmod a+x {appfile}          && \\
         mkdir -p /root/Desktop       && \\
+        rm -f {desktopfile}          && \\
         ln -s {appfile} {desktopfile}
     """)
 

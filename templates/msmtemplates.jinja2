@@ -1,10 +1,7 @@
 # Latest versions of HCP-YA surface averages
 
-ADD S1200_MSMAll3T1071.tar.gz /opt/workbench
-
-RUN cd /opt/workbench                && \
-    tar xf S1200_MSMAll3T1071.tar.gz && \
-    rm S1200_MSMAll3T1071.tar.gz
+# The ADD command will untar the file for us
+ADD S1200_MSMAll3T1071.tar.gz /opt/workbench/
 
 RUN mkdir -p  /opt/workbench/bin/
 ADD wb_view   /opt/workbench/bin/
