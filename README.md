@@ -112,6 +112,7 @@ The Docker images built from the files in this repository contain software and d
  - MATLAB: https://uk.mathworks.com/pricing-licensing.html
  - `dxpy`: https://github.com/dnanexus/dx-toolkit/blob/master/COPYING
  - noVNC: https://github.com/novnc/noVNC/blob/master/LICENSE.txt
+ - Latest versions of the Human Connectome Project MSM surface averages included with permission from Matthew Glasser.
 
 
 ## Notes for development

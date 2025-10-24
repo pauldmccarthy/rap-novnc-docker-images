@@ -1,0 +1,18 @@
+# Latest versions of HCP-YA surface averages
+
+ADD S1200_MSMAll3T1071.tar.gz /opt/workbench
+
+RUN cd /opt/workbench                && \
+    tar xf S1200_MSMAll3T1071.tar.gz && \
+    rm S1200_MSMAll3T1071.tar.gz
+
+RUN mkdir -p  /opt/workbench/bin/
+ADD wb_view   /opt/workbench/bin/
+RUN chmod a+x /opt/workbench/bin/wb_view
+
+# overwrite launcher created by workbench.jinja2
+{{ add_to_profile('export PATH=/opt/workbench/bin:$PATH') }}
+{{ install_launcher(
+      'Workbench',
+      '/opt/workbench/bin/wb_view',
+      '/opt/workbench/workbench_128x128x32.png') }}

@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# Custom wb_view command which pre-loads latest MSM templates
+
+wb_view /opt/workbench/S1200_MSMAll3T1071/{S1200_MSMAll3T1071_AverageT1w_restore.nii.gz,32k/S1200_MSMAll3T1071.{L,R}.very_inflated_MSMAll.32k_fs_LR.surf.gii} "$@"
