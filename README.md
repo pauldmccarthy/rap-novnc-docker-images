@@ -17,6 +17,7 @@ The following images are currently available:
  - `pauldmccarthy/fsleyes-novnc`: Ubuntu desktop with the [FSLeyes image viewer](https://fsl.fmrib.ox.ac.uk/fsl/docs/utilities/fsleyes.html) and a few basic [FSL](https://fsl.fmrib.ox.ac.uk/fsl/docs/) utilities installed (`fslmaths`, `fslstats`, etc).
  - `pauldmccarthy/workbench-novnc`: Ubuntu desktop with [Connectome Workbench](https://humanconnectome.org/software/connectome-workbench), providing the `wb_command` and `wb_view` commands for NIfTI/CIfTI image analysis and visualisation.
  - `pauldmccarthy/fsl-novnc`: Ubuntu desktop with a full FSL installation for MRI analysis and visualisation.
+ - `pauldmccarthy/rap-analysis-novnc`: Ubuntu desktop with FSL, [PANDORA](https://biobank.ndph.ox.ac.uk/ukb/label.cgi?id=539), Connectome Workbench, and MATLAB (you will need a MATLAB license in order to use MATLAB).
 
 
 ## Run locally
@@ -98,6 +99,19 @@ Within the _ttyd_ session, your RAP project workspace is also mounted (read-only
 
 
 If you want to use some other graphical software on the RAP, you can build your own Docker image using the same strategy that is used here. In your own `Dockerfile` you can use the `pauldmccarthy/ubuntuc-novnc` image as a base, and then simply add the commands to install your software. Or feel free to copy+paste the contents of the `Dockerfile` files contained in this repository into your own `Dockerfile`.
+
+
+## Licenses
+
+
+The Docker images built from the files in this repository contain software and data covered by a range of different licenses:
+
+ - FSLeyes: https://git.fmrib.ox.ac.uk/fsl/fsleyes/fsleyes/-/blob/main/LICENSE
+ - FSL: https://fsl.fmrib.ox.ac.uk/fsl/docs/license.html
+ - Workbench: https://github.com/Washington-University/workbench/blob/master/LICENSE
+ - MATLAB: https://uk.mathworks.com/pricing-licensing.html
+ - `dxpy`: https://github.com/dnanexus/dx-toolkit/blob/master/COPYING
+ - noVNC: https://github.com/novnc/noVNC/blob/master/LICENSE.txt
 
 
 ## Notes for development
