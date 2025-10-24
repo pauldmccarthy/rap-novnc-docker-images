@@ -117,8 +117,11 @@ The Docker images built from the files in this repository contain software and d
 
 ## Notes for development
 
-All images are re-built on every push to the main branch of this repository via GitHub Actions. To re-build an image locally, you can just run the `build.sh` script from the repository root, e.g.:
+All images are built using GitHub Actions via a manually triggered workflow.
+To re-build an image locally, you can just run the `build.sh` script from the repository root, e.g.:
 
 ```bash
 ./build.sh ./ubuntu-novnc
 ```
+
+The `build.sh` script assumes that you a `python` executable on your `$PATH` with the `jinja2` library installed.

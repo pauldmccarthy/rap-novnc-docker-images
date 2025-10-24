@@ -48,16 +48,27 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Build image
-        if:   ${{ github.event.inputs.image != 'all' }}
-        run: |
-          bash ./build.sh ./${{ github.event.inputs.image }} --push
+      - name: Build ubuntu-novnc image
+        if:   ${{ github.event.inputs.image == 'all' ||
+                  github.event.inputs.image == 'ubuntu-novnc' }}
+        run: bash ./build.sh ./ubuntu-novnc --push
 
-      - name: Build all images
-        if:   ${{ github.event.inputs.image == 'all' }}
-        run:  |
-          bash ./build.sh ./ubuntu-novnc       --push
-          bash ./build.sh ./fsleyes-novnc      --push
-          bash ./build.sh ./workbench-novnc    --push
-          bash ./build.sh ./fsl-novnc          --push
-          bash ./build.sh ./rap-analysis-novnc --push
+      - name: Build fsleyes-novnc image
+        if:   ${{ github.event.inputs.image == 'all' ||
+                  github.event.inputs.image == 'fsleyes-novnc' }}
+        run: bash ./build.sh ./fsleyes-novnc --push
+
+      - name: Build workbench-novnc image
+        if:   ${{ github.event.inputs.image == 'all' ||
+                  github.event.inputs.image == 'workbench-novnc' }}
+        run: bash ./build.sh ./workbench-novnc --push
+
+      - name: Build fsl-novnc image
+        if:   ${{ github.event.inputs.image == 'all' ||
+                  github.event.inputs.image == 'fsl-novnc' }}
+        run: bash ./build.sh ./fsl-novnc --push
+
+      - name: Build RAP analysis image
+        if:   ${{ github.event.inputs.image == 'all' ||
+                  github.event.inputs.image == 'rap-analysis-novnc' }}
+        run: bash ./build.sh ./rap-analysis-novnc --push

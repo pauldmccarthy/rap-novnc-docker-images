@@ -7,11 +7,13 @@ if [ "$#" -lt 1 ]; then
   exit 1
 fi
 
+THIS_DIR=$(cd $(dirname $0) && pwd)
+
 IMAGE_DIR="$1"
 shift
 BUILD_ARGS="$@"
 
-python ./generate.py ${IMAGE_DIR}
+python ${THIS_DIR}/generate.py ${IMAGE_DIR}
 
 IMAGE_NAME=$(basename ${IMAGE_DIR})
 IMAGE_NAME="pauldmccarthy/${IMAGE_NAME}"
@@ -22,4 +24,4 @@ docker buildx build               \
   -t "${IMAGE_NAME}:${IMAGE_TAG}" \
   -t "${IMAGE_NAME}:latest"       \
   -f ${IMAGE_DIR}/Dockerfile      \
-   ./resources/
+   ${THIS_DIR}/resources/
