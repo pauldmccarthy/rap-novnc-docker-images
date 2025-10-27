@@ -2,18 +2,13 @@
 
 vncserver :1
 
+port=$1
 
-# if running on RAP, pre-generate the host name:
-if [[ ${DX_JOB_ID} != "" ]]; then
-  host="${DX_JOB_ID}.dnanexus.cloud"
-  echo ""
-  echo "Open this URL in a web browser: https://${host}:8080/vnc.html?host=${host}&port=8080"
-  echo ""
-  echo "(do not open the second URL listed below)"
-  echo ""
+if [ "$port" = "" ]; then
+    port=8080
 fi
 
 /opt/noVNC/utils/novnc_proxy \
   --vnc localhost:5901       \
-  --listen 8080
+  --listen ${port}
 vncserver -kill :1

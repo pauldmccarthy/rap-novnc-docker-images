@@ -54,7 +54,9 @@ RUN mkdir -p         /root/.vnc/
 ADD vncserver-config /root/.vnc/config
 ADD defaults.json    /opt/noVNC/
 ADD startvnc         /opt/noVNC/startvnc
+ADD novnc_proxy      /opt/noVNC/utils/novnc_proxy
 RUN chmod a+x        /opt/noVNC/startvnc
+RUN chmod a+x        /opt/noVNC/utils/novnc_proxy
 
 #################
 # micromamba + dx

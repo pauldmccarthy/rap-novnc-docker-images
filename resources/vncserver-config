@@ -1,2 +1,7 @@
-SecurityTypes=None
 session=xfce
+SecurityTypes=None
+IdleTimeout=0
+MaxConnectionTime=0
+MaxDisconnectionTime=0
+MaxIdleTime=0
+
