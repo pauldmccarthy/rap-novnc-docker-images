@@ -60,27 +60,28 @@ You can use these images on the RAP via the _ttyd_ tool.
 11. Run these commands in the shell (change `<image>` to the Docker image you wish to run, e.g. `pauldmccarthy/fsleyes-novnc`):
     ```bash
     env | egrep "^DX_" > dx.env
-    docker run --network host      \
-      --env-file dx.env            \
-      -v /mnt/project:/mnt/project \
+    docker run --name novnc --detach \
+      --network host                 \
+      --env-file dx.env              \
+      -v /mnt/project:/mnt/project   \
       <image>:latest
+    docker logs -f novnc
     ```
 
-12. Once the image has started running, a message starting with _Open this URL in a web browser_ will be printed. Copy+paste the URL into a new web browser window to open your desktop session.
+12. Once the image has started running, a message starting with _Navigate to this URL_ will be printed. Copy+paste the URL into a new web browser window to open your desktop session.
+
 
 ### Access your UK Biobank data
 
-When running on the RAP, we recommend running the Docker image with commands such as:
+The Docker images have the `dx` command installed, however in order for it to work correctly, you need to pass the relevant environment variables from the _ttyd_ session into the running Docker container.  This is done for you in the recommended commands above - the environemnt variables are saved to a file with this command:
 
-```bash
+```
 env | egrep "^DX_" > dx.env
-docker run --network host      \
-  --env-file dx.env            \
-  -v /mnt/project:/mnt/project \
-  pauldmccarthy/ubuntu-novnc
 ```
 
-The Docker images have the `dx` command installed, however in order for it to work correctly, you need to pass the relevant environment variables from the _ttyd_ session into the running Docker container. You can do this by saving them to a file, and then passing that file to `docker run` via its `--env-file` option. You may also need to re-select your RAP project by running:
+And this file is then passed to `docker run` via its `--env-file` option.
+
+You may need to re-select your RAP project by running:
 
 ```bash
 dx select
@@ -93,6 +94,11 @@ Once this has been done, you can use `dx` to upload/download data to/from your R
  - `dx upload <file>` - upload a file from the workstation to your project workspace.
 
 Within the _ttyd_ session, your RAP project workspace is also mounted (read-only) at `/mnt/project/` - in the above `docker run` command, this is mounted into the Docker container via the `-v` option. This means you can access your Project files without having to run `dx download`.
+
+
+### Keep the Docker container running
+
+A RAP _ttyd_ window is like a SSH session - when you close the window, any commands that you are running will be killed. To make sure that your desktop doesn't get killed when you close the _ttyd_ window (or e.g. put your laptop to sleep), you can run the Docker container in "detached" mode. This is done for you in the recommended command above via the `--detach` option. This should ensure that your Desktop session remains active until you kill the _ttyd_ job in the RAP Monitor web page.
 
 
 ## Build your own Docker images
