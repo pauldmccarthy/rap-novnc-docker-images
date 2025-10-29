@@ -6,8 +6,10 @@ LABEL org.opencontainers.image.source="https://github.com/pauldmccarthy/rap-novn
 LABEL org.opencontainers.image.title="Ubuntu+noVNC desktop with FSL, Connectome Workbench, and MATLAB installed"
 LABEL org.opencontainers.image.description="Ubuntu+noVNC desktop with FSL, Connectome Workbench, and MATLAB installed, for MRI image analysis on the UK Biobank Research Analysis Platform (RAP)."
 
+USER root
 {% include "emacs.jinja2" %}
 {% include "pandora.jinja2" %}
 {% include "workbench.jinja2" %}
 {% include "msmtemplates.jinja2" %}
 {% include "matlab.jinja2" %}
+USER ubuntu

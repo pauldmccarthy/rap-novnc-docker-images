@@ -26,14 +26,14 @@ def apt_install(*packages):
 
 
 def add_to_profile(line):
-    return f"RUN echo '{line}' >> /root/.bashrc"
+    return f"RUN echo '{line}' >> /home/ubuntu/.bashrc"
 
 
 def install_launcher(title, exe, icon, **envvars):
 
     basename    = title.replace(' ', '-')
     appfile     = f'/usr/share/applications/{basename}.desktop'
-    desktopfile = f'/root/Desktop/{basename}.desktop'
+    desktopfile = f'/home/ubuntu/Desktop/{basename}.desktop'
     envvars     = ' '.join(f'{k}="{v}"' for k, v in envvars.items())
     desktop     = tw.dedent(f"""
     [Desktop Entry]
@@ -43,15 +43,16 @@ def install_launcher(title, exe, icon, **envvars):
     Icon={icon}
     Terminal=false
     StartupNotify=false
-    Path=/root/
+    Path=/home/ubuntu/
     """).strip().replace('\n', '\\n')
 
     return tw.dedent(f"""
-    RUN echo '{desktop}' > {appfile} && \\
-        chmod a+x {appfile}          && \\
-        mkdir -p /root/Desktop       && \\
-        rm -f {desktopfile}          && \\
-        ln -s {appfile} {desktopfile}
+    RUN echo '{desktop}' > {appfile}   && \\
+        chmod a+x {appfile}            && \\
+        mkdir -p /home/ubuntu/Desktop  && \\
+        rm -f {desktopfile}            && \\
+        ln -s {appfile} {desktopfile}  && \\
+        chown -R ubuntu:ubuntu /home/ubuntu/Desktop/
     """)
 
 def generate_dockerfile(subdir):
@@ -65,7 +66,7 @@ def generate_dockerfile(subdir):
     env    = {
         'apt_install'      : apt_install,
         'add_to_profile'   : add_to_profile,
-        'install_launcher' : install_launcher
+        'install_launcher' : install_launcher,
     }
 
     with open(infile, 'rt') as f:

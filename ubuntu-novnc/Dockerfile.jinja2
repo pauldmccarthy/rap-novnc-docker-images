@@ -6,6 +6,17 @@ LABEL org.opencontainers.image.source="https://github.com/pauldmccarthy/rap-novn
 LABEL org.opencontainers.image.title="Minimal Ubuntu+noVNC desktop"
 LABEL org.opencontainers.image.description="Minimual Ubuntu+noVNC installation for running software within a graphical Linux desktop environment. Includes the DNANexus 'dx' command-line tool for running on the UK Biobank Research Analysis Platform (RAP)."
 
+############################
+# Delete default ubuntu user
+############################
+
+# See:
+#  - https://bugs.launchpad.net/cloud-images/+bug/2005129
+#  - https://askubuntu.com/questions/1513927/ubuntu-24-04-docker-images-now-includes-user-ubuntu-with-uid-gid-1000
+RUN touch /var/mail/ubuntu        && \
+    chown ubuntu /var/mail/ubuntu && \
+    userdel -r ubuntu
+
 ###############################
 # Core utilities + XFCE desktop
 ###############################
@@ -22,6 +33,7 @@ LABEL org.opencontainers.image.description="Minimual Ubuntu+noVNC installation f
        'libxfce4ui-utils',
        'nano',
        'python3',
+       'sudo',
        'thunar',
        'tini',
        'tigervnc-common',
@@ -50,8 +62,8 @@ RUN NOVNCURL=https://github.com/novnc/noVNC/archive/v1.6.0.tar.gz;         \
     curl -sSfL ${WSCKURL}  | tar -zxf - -C ./utils/websockify --strip=1 && \
     find . -name ".git*"   | xargs rm -rf
 
-RUN mkdir -p         /root/.vnc/
-ADD vncserver-config /root/.vnc/config
+RUN mkdir -p         /home/ubuntu/.vnc/
+ADD vncserver-config /home/ubuntu/.vnc/config
 ADD defaults.json    /opt/noVNC/
 ADD startvnc         /opt/noVNC/startvnc
 ADD novnc_proxy      /opt/noVNC/utils/novnc_proxy
@@ -77,11 +89,13 @@ RUN if   [ $(uname -m) = "x86_64" ]; then                                       
     bin/micromamba clean --all                                                    && \
     bin/pip install dxpy;
 
-###########################
-# XFCE4 panel configuration
-###########################
+#####################
+# XFCE4 configuration
+#####################
 
-COPY xfce-panel.xml /etc/xdg/xfce4/panel/default.xml
+RUN mkdir -p            /home/ubuntu/.config/xfce4/xfconf/xfce-perchannel-xml/
+COPY xfce4-panel.xml    /home/ubuntu/.config/xfce4/xfconf/xfce-perchannel-xml/
+COPY xfce4-terminal.xml /home/ubuntu/.config/xfce4/xfconf/xfce-perchannel-xml/
 
 ###############
 # shell profile
@@ -95,7 +109,22 @@ COPY xfce-panel.xml /etc/xdg/xfce4/panel/default.xml
 {{ add_to_profile('eval "$(${MAMBA_ROOT_PREFIX}bin/micromamba shell hook -s posix)"') }}
 {{ add_to_profile('micromamba activate ${MAMBA_ROOT_PREFIX}') }}
 
-ENV USER=root
-WORKDIR /root
+##############
+# Default user
+##############
+
+RUN useradd                   \
+      --create-home           \
+      --user-group            \
+      --home-dir /home/ubuntu \
+      --password ""           \
+      --shell /bin/bash       \
+      ubuntu               && \
+    usermod -aG sudo ubuntu
+
+RUN     chown -R ubuntu:ubuntu /home/ubuntu/
+USER    ubuntu
+ENV     USER=ubuntu
+WORKDIR /home/ubuntu
 
 ENTRYPOINT [ "/usr/bin/tini", "--", "/opt/noVNC/startvnc" ]

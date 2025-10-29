@@ -6,4 +6,6 @@ LABEL org.opencontainers.image.source="https://github.com/pauldmccarthy/rap-novn
 LABEL org.opencontainers.image.title="Ubuntu+noVNC desktop with FSL installed"
 LABEL org.opencontainers.image.description="Ubuntu+noVNC desktop with FSL installed, for MRI image analysis on the UK Biobank Research Analysis Platform (RAP)."
 
+USER root
 {% include "fsl.jinja2" %}
+USER ubuntu

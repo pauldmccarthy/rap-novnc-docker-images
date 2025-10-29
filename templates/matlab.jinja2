@@ -86,8 +86,9 @@ RUN cd /tmp/                                            && \
         --destination=/opt/MATLAB                          \
         --products "MATLAB"                             && \
     rm -f /opt/MATLAB/sys/os/glnxa64/libstdc++.*        && \
-    rm -f mpm mathworks_root.log                        && \
-    echo 'export PATH=/opt/MATLAB/bin:$PATH' >> /root/.bashrc
+    rm -f mpm mathworks_root.log
+
+{{ add_to_profile('export PATH=/opt/MATLAB/bin:$PATH') }}
 
 # Matlab Service Host
 RUN MSHURL=https://www.mathworks.com/MathWorksServiceHost/glnxa64/install_managed_msh.sh; \
