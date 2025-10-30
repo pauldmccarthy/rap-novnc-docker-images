@@ -29,7 +29,10 @@ def add_to_profile(line):
     return f"RUN echo '{line}' >> /home/ubuntu/.bashrc"
 
 
-def install_launcher(title, exe, icon, **envvars):
+def install_launcher(title, exe, icon, terminal=False, **envvars):
+
+    if terminal: terminal = 'true'
+    else:        terminal = 'false'
 
     basename    = title.replace(' ', '-')
     appfile     = f'/usr/share/applications/{basename}.desktop'
@@ -41,7 +44,7 @@ def install_launcher(title, exe, icon, **envvars):
     Name={title}
     Exec=env {envvars} {exe}
     Icon={icon}
-    Terminal=false
+    Terminal={terminal}
     StartupNotify=false
     Path=/home/ubuntu/
     """).strip().replace('\n', '\\n')

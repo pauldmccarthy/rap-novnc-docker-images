@@ -19,6 +19,6 @@ RUN /opt/micromamba/bin/micromamba create -y                        \
 
 {{ install_launcher(
        'FSLeyes',
-        '/opt/fsleyes/bin/fsleyes',
+        '/opt/fsleyes/bin/fsleyes %F',
         '/opt/fsleyes/lib/python3.13/site-packages/fsleyes/assets/linux/hicolor/48x48/apps/fsleyes.png',
         FSLDIR='/opt/fsleyes/') }}
