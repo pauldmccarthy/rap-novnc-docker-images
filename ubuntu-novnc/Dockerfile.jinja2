@@ -93,9 +93,12 @@ RUN if   [ $(uname -m) = "x86_64" ]; then                                       
 # XFCE4 configuration
 #####################
 
-RUN mkdir -p            /home/ubuntu/.config/xfce4/xfconf/xfce-perchannel-xml/
+RUN  mkdir -p           /usr/share/backgrounds/
+COPY oxcin-desktop.png  /usr/share/backgrounds/
+RUN  mkdir -p           /home/ubuntu/.config/xfce4/xfconf/xfce-perchannel-xml/
 COPY xfce4-panel.xml    /home/ubuntu/.config/xfce4/xfconf/xfce-perchannel-xml/
 COPY xfce4-terminal.xml /home/ubuntu/.config/xfce4/xfconf/xfce-perchannel-xml/
+COPY xfce4-desktop.xml  /home/ubuntu/.config/xfce4/xfconf/xfce-perchannel-xml/
 
 ###############
 # shell profile
