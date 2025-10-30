@@ -9,8 +9,12 @@ import jinja2 as j2
 BASEDIR = op.dirname(op.abspath(__file__))
 
 
-def apt_install(*packages):
-    pre = ['RUN DEBIAN_FRONTEND=noninteractive && \\',
+def apt_install(*packages, subcmd=False):
+    if not subcmd:
+        run = 'RUN'
+    else:
+        run = ''
+    pre = [f'{run} DEBIAN_FRONTEND=noninteractive && \\',
            '    apt update -y && \\',
            '    apt install -y \\']
 

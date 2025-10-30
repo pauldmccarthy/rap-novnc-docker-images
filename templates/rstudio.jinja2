@@ -4,14 +4,13 @@
 
 {{ apt_install('software-properties-common dirmngr') }}
 
-curl -Ls https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc && \
-add-apt-repository -y "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+RUN curl -Ls https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc && \
+    add-apt-repository -y "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/" && \
+    {{ apt_install('r-base', 'r-cran-devtools', subcmd=True) }}
 
-{{ apt_install('r-base', 'r-cran-devtools') }}
-
-curl -Ls https://download1.rstudio.org/electron/jammy/amd64/rstudio-2025.09.1-401-amd64.deb > rstudio.deb && \
-{{ apt_install('./rstudio.deb') }}  && \
-rm ./rstudio.deb
+RUN curl -Ls https://download1.rstudio.org/electron/jammy/amd64/rstudio-2025.09.1-401-amd64.deb > rstudio.deb && \
+    {{ apt_install('./rstudio.deb', subcmd=True) }} && \
+    rm ./rstudio.deb
 
 {{ install_launcher(
        'R',
