@@ -81,21 +81,26 @@ RUN ln -s $(which gcc-12) /usr/bin/gcc && \
 RUN cd /tmp/                                            && \
     curl -LsO https://www.mathworks.com/mpm/glnxa64/mpm && \
     chmod +x mpm                                        && \
-    ./mpm install                                          \
+    HOME=/home/ubuntu ./mpm install                        \
         --release=r2025b                                   \
         --destination=/opt/MATLAB                          \
         --products "MATLAB"                             && \
     rm -f /opt/MATLAB/sys/os/glnxa64/libstdc++.*        && \
     rm -f mpm mathworks_root.log
 
-{{ add_to_profile('export PATH=/opt/MATLAB/bin:$PATH') }}
+RUN  mkdir     /opt/MATLAB/wrapper
+COPY matlab    /opt/MATLAB/wrapper
+RUN  chmod a+x /opt/MATLAB/wrapper/matlab
+
+{{ add_to_profile('export PATH=/opt/MATLAB/wrapper:$PATH') }}
 
 # Matlab Service Host
 RUN MSHURL=https://www.mathworks.com/MathWorksServiceHost/glnxa64/install_managed_msh.sh; \
-    cd /tmp/                                       && \
-    curl  -Ls  ${MSHURL} > msh                     && \
-    chmod +x ./msh                                 && \
-    ./msh --destination /opt/Mathworks/ServiceHost && \
+    cd /tmp/                                                   && \
+    curl  -Ls  ${MSHURL} > msh                                 && \
+    chmod +x ./msh                                             && \
+    MW_SERVICEHOST_USE_HOSTNAME_FOR_PERSISTENCE="false"           \
+    ./msh --destination /opt/Mathworks/ServiceHost --all-users && \
     rm ./msh
 
 {{ install_launcher(
