@@ -104,6 +104,7 @@ def main(args=None):
             'f{BASEDIR}/ubuntu-novnc',
             'f{BASEDIR}/fsleyes-novnc',
             'f{BASEDIR}/workbench-novnc',
+            'f{BASEDIR}/fastconfounds-novnc',
             'f{BASEDIR}/fsl-novnc',
             'f{BASEDIR}/rap-analysis-novnc']
     else:
