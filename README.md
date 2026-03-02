@@ -18,6 +18,7 @@ The following images are currently available:
  - `pauldmccarthy/workbench-novnc`: Ubuntu desktop with [Connectome Workbench](https://humanconnectome.org/software/connectome-workbench), providing the `wb_command` and `wb_view` commands for NIfTI/CIfTI image analysis and visualisation.
  - `pauldmccarthy/fsl-novnc`: Ubuntu desktop with a full FSL installation for MRI analysis and visualisation.
  - `pauldmccarthy/rap-analysis-novnc`: Ubuntu desktop with FSL, [PANDORA](https://biobank.ndph.ox.ac.uk/ukb/label.cgi?id=539), Connectome Workbench, RStudio, and MATLAB (you will need a MATLAB license in order to use MATLAB).
+ - `pauldmccarthy/pandora-novnc`: Ubuntu desktop with [PANDORA-capable](https://biobank.ndph.ox.ac.uk/ukb/label.cgi?id=539) version of `fsl_glm`, [`fastconfounds`](https://git.fmrib.ox.ac.uk/fsl/fastconfounds/), and [FUNPACK](https://open.oxcin.ox.ac.uk/pages/fsl/funpack).
 
 
 ## Run locally

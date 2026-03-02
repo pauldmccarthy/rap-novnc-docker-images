@@ -11,7 +11,7 @@ on:
           - ubuntu-novnc
           - fsleyes-novnc
           - workbench-novnc
-          - fastconfounds-novnc
+          - pandora-novnc
           - fsl-novnc
           - rap-analysis-novnc
           - all
@@ -69,10 +69,10 @@ jobs:
                   github.event.inputs.image == 'workbench-novnc' }}
         run: bash ./build.sh ./workbench-novnc --push
 
-      - name: Build fastconfounds-novnc image
+      - name: Build pandora-novnc image
         if:   ${{ github.event.inputs.image == 'all' ||
-                  github.event.inputs.image == 'fastconfounds-novnc' }}
-        run: bash ./build.sh ./fastconfounds-novnc --push
+                  github.event.inputs.image == 'pandora-novnc' }}
+        run: bash ./build.sh ./pandora-novnc --push
 
       - name: Build fsl-novnc image
         if:   ${{ github.event.inputs.image == 'all' ||

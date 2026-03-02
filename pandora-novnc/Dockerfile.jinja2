@@ -3,8 +3,8 @@ LABEL org.opencontainers.image.authors="pauldmccarthy@gmail.com"
 LABEL org.opencontainers.image.url="https://github.com/pauldmccarthy/rap-novnc-docker-images"
 LABEL org.opencontainers.image.documentation="https://github.com/pauldmccarthy/rap-novnc-docker-images"
 LABEL org.opencontainers.image.source="https://github.com/pauldmccarthy/rap-novnc-docker-images"
-LABEL org.opencontainers.image.title="Ubuntu+noVNC desktop with fastconfounds and fmrib-unpack"
-LABEL org.opencontainers.image.description="Ubuntu+noVNC desktop with fastconfounds and fmrib-unpack, for data processing on the UK Biobank Research Analysis Platform (RAP)."
+LABEL org.opencontainers.image.title="Ubuntu+noVNC desktop with PANDORA fsl_glm, fastconfounds and fmrib-unpack"
+LABEL org.opencontainers.image.description="Ubuntu+noVNC desktop with PANDORA fsl_glm, fastconfounds and fmrib-unpack, for data processing on the UK Biobank Research Analysis Platform (RAP)."
 
 ###########################
 # fastconfounds and funpack
@@ -17,10 +17,13 @@ RUN /opt/micromamba/bin/micromamba create -y                             \
         -c conda-forge                                                   \
         -p /opt/fastconfounds/                                           \
         python=3.13                                                      \
-        fsl-fastconfounds fmrib-unpack                                && \
+        "blas=*=*mkl"                                                    \
+        fsl-melodic fsl-fastconfounds fmrib-unpack                    && \
     /opt/micromamba/bin/micromamba clean --all
 
 {{ add_to_profile('micromamba activate /opt/fastconfounds') }}
+{{ add_to_profile('export FSLDIR=/opt/fastconfoudns/') }}
+{{ add_to_profile('source ${FSLDIR}/etc/fslconf/fsl.sh') }}
 {{ add_to_profile('alias funpack=/opt/fastconfounds/bin/fmrib_unpack') }}
 
 USER ubuntu
