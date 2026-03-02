@@ -22,7 +22,7 @@ RUN /opt/micromamba/bin/micromamba create -y                             \
     /opt/micromamba/bin/micromamba clean --all
 
 {{ add_to_profile('micromamba activate /opt/fastconfounds') }}
-{{ add_to_profile('export FSLDIR=/opt/fastconfoudns/') }}
+{{ add_to_profile('export FSLDIR=/opt/fastconfounds/') }}
 {{ add_to_profile('source ${FSLDIR}/etc/fslconf/fsl.sh') }}
 {{ add_to_profile('alias funpack=/opt/fastconfounds/bin/fmrib_unpack') }}
 
