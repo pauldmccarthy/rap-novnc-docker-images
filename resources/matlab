@@ -1,5 +1,3 @@
 #!/usr/bin/env bash
 
-shift
-
 /opt/MATLAB/bin/matlab -licmode online "$@"

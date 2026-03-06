@@ -77,14 +77,15 @@
 RUN ln -s $(which gcc-12) /usr/bin/gcc && \
     ln -s $(which g++-12) /usr/bin/g++
 
-# MATLAB itself
+# MATLAB itself, along with some toolboxes
+ENV MATLAB_PRODUCTS="MATLAB Image_Processing_Toolbox Statistics_and_Machine_Learning_Toolbox"
 RUN cd /tmp/                                            && \
     curl -LsO https://www.mathworks.com/mpm/glnxa64/mpm && \
     chmod +x mpm                                        && \
     HOME=/home/ubuntu ./mpm install                        \
         --release=r2025b                                   \
         --destination=/opt/MATLAB                          \
-        --products "MATLAB"                             && \
+        --products "${MATLAB_PRODUCTS}"                 && \
     rm -f /opt/MATLAB/sys/os/glnxa64/libstdc++.*        && \
     rm -f mpm mathworks_root.log
 
